@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>روزکالا | فروشگاه آنلاین</title>
+<style>
+:root{--gold:#e7b928;--ink:#171717;--muted:#777;--line:#eaeaea;--bg:#fafafa;--red:#a52b2b}
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:11px 15px;background:var(--ink);color:#fff}
+button.gold{background:var(--gold);color:#171717;font-weight:bold}button.ghost{background:#fff;color:#171717;border:1px solid var(--line)}
+button.danger{background:#fff0f0;color:var(--red);border:1px solid #f1d1d1}
+header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.wrap{max-width:1180px;margin:auto;padding:0 18px}.top{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;font-size:23px;font-weight:900}.mark{width:45px;height:45px;border-radius:50%;background:var(--gold);display:grid;place-items:center;font-weight:900;border:2px solid var(--ink)}
+nav{display:flex;gap:18px;align-items:center}nav a{color:#333;text-decoration:none;font-size:14px}
+.hero{margin:24px auto;background:var(--ink);color:#fff;border-radius:22px;padding:34px;display:grid;grid-template-columns:1.3fr .7fr;gap:20px;align-items:center}
+.hero h1{font-size:clamp(28px,4vw,45px);margin:0 0 12px}.hero p{color:#ddd;line-height:2}.hero-mark{height:185px;border-radius:18px;background:linear-gradient(135deg,#f4d36b,#bd8d10);display:grid;place-items:center;color:var(--ink);font-size:68px;font-weight:900}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:28px 0 16px}.section-head h2{margin:0;font-size:22px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}.filters button{background:#fff;color:#333;border:1px solid var(--line);padding:8px 13px}.filters button.active{background:var(--gold);border-color:var(--gold)}
+.products{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px}.product{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}.photo{height:180px;background:linear-gradient(135deg,#eee,#ddd);display:grid;place-items:center;color:#777}
+.pbody{padding:14px}.pbody h3{font-size:15px;margin:0 0 8px}.price{font-weight:bold;margin:10px 0}.muted{color:var(--muted);font-size:12px}.actions{display:flex;gap:7px}.actions button{flex:1;padding:9px 6px;font-size:12px}
+.panel{display:none;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;margin:24px auto}.panel.show{display:block}
+.formgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.formgrid input,.formgrid select,.field{width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;background:#fff}
+.notice{font-size:12px;color:#775d11;background:#fff8dc;padding:12px;border-radius:10px;line-height:1.9;margin:12px 0}
+.overlay{display:none;position:fixed;inset:0;background:#0008;z-index:10;padding:18px;overflow:auto}.overlay.show{display:flex;align-items:center;justify-content:center}
+.modal{background:#fff;border-radius:18px;width:min(620px,100%);padding:20px;max-height:92vh;overflow:auto;box-shadow:0 15px 50px #0003}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.modal-head h2{margin:0}
+.cart-item{display:grid;grid-template-columns:1fr auto;gap:12px;padding:15px 0;border-bottom:1px solid var(--line)}
+.cart-controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.qty{min-width:26px;text-align:center;font-weight:bold}.smallbtn{padding:6px 11px;border-radius:8px}
+.variant{padding:8px;border:1px solid var(--line);border-radius:8px;background:#fff;max-width:130px}
+.total{display:flex;justify-content:space-between;font-weight:bold;font-size:18px;padding:18px 0}
+.admin-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+footer{background:var(--ink);color:#ddd;padding:26px 0;margin-top:24px}.footer-in{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.toast{position:fixed;bottom:18px;right:18px;background:#222;color:white;padding:12px 16px;border-radius:10px;z-index:20;display:none}
+@media(max-width:850px){.products{grid-template-columns:repeat(2,1fr)}.hero{grid-template-columns:1fr}.hero-mark{height:110px}.formgrid{grid-template-columns:repeat(2,1fr)}nav{gap:9px}nav a{font-size:12px}}
+@media(max-width:480px){.top{padding:10px 0;flex-wrap:wrap}.brand{font-size:20px}.products{gap:10px}.photo{height:140px}.pbody{padding:10px}.hero{padding:22px}.formgrid{grid-template-columns:1fr}.cart-item{grid-template-columns:1fr}.variant{max-width:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap top">
+ <div class="brand"><span class="mark">RK</span><span>روزکالا</span></div>
+ <nav><a href="#products">فروشگاه</a><a href="#about">درباره ما</a><a href="#" onclick="toggleAdmin();return false">پنل مدیریت</a></nav>
+ <div style="display:flex;gap:8px"><button class="ghost" onclick="openAuth()">ورود / ثبت‌نام</button><button class="gold" onclick="openCart()">سبد خرید <span id="cartCount">۰</span></button></div>
+</div></header>
+<main class="wrap">
+ <section class="hero"><div><div style="color:var(--gold);font-weight:bold;margin-bottom:12px">ROOZKALA • ONLINE STORE</div><h1>استایل روزت رو<br>با روزکالا انتخاب کن</h1><p>انتخابی تازه برای پوشاک زنانه و بچگانه؛ ساده، شیک و به‌صرفه.</p><button class="gold" onclick="document.querySelector('#products').scrollIntoView({behavior:'smooth'})">مشاهده محصولات</button></div><div class="hero-mark">RK</div></section>
+ <section id="products"><div class="section-head"><h2>محصولات فروشگاه</h2><span class="muted">نمونه نمایشی</span></div>
+ <div class="filters"><button class="active" onclick="filter('همه',this)">همه</button><button onclick="filter('زنانه',this)">زنانه</button><button onclick="filter('بچگانه',this)">بچگانه</button></div>
+ <div class="products" id="productGrid"></div></section>
+ <section class="panel" id="admin"><div class="section-head"><h2>پنل مدیریت روزکالا</h2><button class="ghost" onclick="toggleAdmin()">بستن</button></div>
+ <div class="notice">این پنل در نسخه نمایشی است و رمز/ورود مدیر ندارد. قبل از انتشار عمومی باید احراز هویت مدیر و پایگاه داده امن متصل شود.</div>
+ <h3>افزودن محصول</h3><div class="formgrid"><input id="newName" placeholder="نام محصول"><input id="newPrice" type="number" placeholder="قیمت (تومان)"><select id="newCat"><option>زنانه</option><option>بچگانه</option></select><input id="newSizes" placeholder="سایزها، مثال: S,M,L"></div><input id="newColors" class="field" style="margin-top:10px" placeholder="رنگ‌ها، مثال: مشکی، کرم، آبی"><button class="gold" style="margin-top:12px" onclick="addProduct()">ثبت محصول</button>
+ <div id="adminList" style="margin-top:16px"></div></section>
+ <section id="about" style="padding:10px 0 30px"><h2>روزکالا؛ خریدی ساده و مطمئن</h2><p class="muted">اطلاعات تماس، قوانین ارسال و مرجوعی اینجا تکمیل می‌شود.</p></section>
+</main>
+<footer><div class="wrap footer-in"><div><b style="color:var(--gold)">روزکالا | RK</b><div class="muted" style="color:#bbb;margin-top:8px">فروشگاه اینترنتی پوشاک زنانه و بچگانه</div></div><div>پشتیبانی: شماره تماس فروشگاه را اینجا وارد کنید</div></div></footer>
+
+<div class="overlay" id="cartOverlay" onclick="if(event.target===this)closeModal('cartOverlay')"><div class="modal">
+ <div class="modal-head"><h2>سبد خرید شما</h2><button class="ghost smallbtn" onclick="closeModal('cartOverlay')">بستن</button></div>
+ <div id="cartItems"></div><div class="total"><span>جمع کل</span><span id="cartTotal">۰ تومان</span></div>
+ <div class="notice">در این نسخه، سبد خرید در همین مرورگر نگهداری می‌شود. ثبت سفارش و پرداخت آنلاین هنوز به سرور متصل نشده است.</div>
+ <button class="gold" style="width:100%" onclick="checkoutNotice()">ادامه ثبت سفارش</button>
+</div></div>
+
+<div class="overlay" id="authOverlay" onclick="if(event.target===this)closeModal('authOverlay')"><div class="modal">
+ <div class="modal-head"><h2>ورود / ثبت‌نام روزکالا</h2><button class="ghost smallbtn" onclick="closeModal('authOverlay')">بستن</button></div>
+ <p class="muted">با شماره موبایل و کد یکبارمصرف پیامکی وارد شوید.</p>
+ <label for="phone">شماره موبایل</label><input id="phone" class="field" style="margin:7px 0 12px" placeholder="مثلاً 09123456789" inputmode="tel">
+ <button class="gold" style="width:100%" id="sendOtpBtn" onclick="sendOtp()">ارسال کد تأیید</button>
+ <div id="otpArea" style="display:none;margin-top:16px"><label for="otp">کد پیامک‌شده</label><input id="otp" class="field" style="margin:7px 0 12px" placeholder="کد تأیید" inputmode="numeric"><button style="width:100%" onclick="verifyOtp()">تأیید و ورود</button></div>
+ <div id="authStatus" class="notice">برای فعال شدن پیامک واقعی، پروژه Supabase و ارائه‌دهنده SMS باید تنظیم شوند. این نسخه به‌تنهایی پیامک ارسال نمی‌کند.</div>
+</div></div>
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// تنظیمات لازم برای OTP واقعی: از پنل Supabase مقدار URL و anon key را جایگزین کنید.
+// همچنین Phone Auth و ارائه‌دهنده SMS را در Supabase فعال کنید. کلید service_role را هرگز اینجا قرار ندهید.
+const SUPABASE_URL = "https://zazjlmepftdeqkxytssu.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_z7cRE7w5NfIZEY2D6TYGhA_3DyR0tHY";
+let supabaseClient = null;
+if(window.supabase && SUPABASE_URL.startsWith("https://") && SUPABASE_ANON_KEY !== "sb_publishable_z7cRE7w5NfIZEY2D6TYGhA_3DyR0tHY"){
+  supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+}
+const seed=[
+ {id:1,name:'مانتو روزمره',price:890000,cat:'زنانه',sizes:['38','40','42'],colors:['مشکی','کرم','طوسی']},
+ {id:2,name:'شومیز ساده',price:520000,cat:'زنانه',sizes:['S','M','L'],colors:['سفید','آبی','کرم']},
+ {id:3,name:'ست راحتی کودک',price:430000,cat:'بچگانه',sizes:['2','4','6'],colors:['صورتی','آبی','زرد']},
+ {id:4,name:'هودی بچگانه',price:610000,cat:'بچگانه',sizes:['6','8','10'],colors:['مشکی','سبز','طوسی']}
+];
+let products=JSON.parse(localStorage.getItem('rk_products_v2')||'null')||seed;
+let cart=JSON.parse(localStorage.getItem('rk_cart_v2')||'[]');
+let currentFilter='همه';
+const fmt=n=>Number(n).toLocaleString('fa-IR');
+function save(){localStorage.setItem('rk_products_v2',JSON.stringify(products));localStorage.setItem('rk_cart_v2',JSON.stringify(cart))}
+function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2600)}
+function render(cat=currentFilter){
+ currentFilter=cat;const list=cat==='همه'?products:products.filter(p=>p.cat===cat);
+ document.getElementById('productGrid').innerHTML=list.map(p=>`<article class="product"><div class="photo">تصویر محصول</div><div class="pbody"><h3>${esc(p.name)}</h3><div class="muted">${esc(p.cat)} • سایز: ${esc((p.sizes||[]).join('، '))}</div><div class="price">${fmt(p.price)} تومان</div><div class="actions"><button class="gold" onclick="addCart(${p.id})">افزودن به سبد</button></div></div></article>`).join('')||'<p>محصولی در این دسته ثبت نشده است.</p>';
+ renderAdmin();updateCartCount();
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function filter(c,b){document.querySelectorAll('.filters button').forEach(x=>x.classList.remove('active'));b.classList.add('active');render(c)}
+function addCart(id){let p=products.find(x=>x.id===id);if(!p)return;let size=p.sizes?.[0]||'',color=p.colors?.[0]||'';let line=cart.find(x=>x.productId===id&&x.size===size&&x.color===color);if(line)line.qty++;else cart.push({productId:id,name:p.name,price:p.price,size,color,qty:1});save();updateCartCount();toast('محصول به سبد خرید اضافه شد')}
+function updateCartCount(){let n=cart.reduce((s,x)=>s+x.qty,0);document.getElementById('cartCount').textContent=fmt(n)}
+function openCart(){renderCart();document.getElementById('cartOverlay').classList.add('show')}
+function renderCart(){
+ const el=document.getElementById('cartItems');
+ if(!cart.length){el.innerHTML='<p class="muted" style="padding:22px 0">سبد خرید خالی است.</p>';document.getElementById('cartTotal').textContent='۰ تومان';return}
+ el.innerHTML=cart.map((x,i)=>{let p=products.find(p=>p.id===x.productId);let sizes=p?.sizes||[x.size],colors=p?.colors||[x.color];
+ return `<div class="cart-item"><div><b>${esc(x.name)}</b><div class="muted" style="margin:6px 0">${fmt(x.price)} تومان برای هر عدد</div>
+ <div class="cart-controls"><label class="muted">سایز</label><select class="variant" onchange="changeVariant(${i},'size',this.value)">${sizes.map(v=>`<option ${v===x.size?'selected':''}>${esc(v)}</option>`).join('')}</select>
+ <label class="muted">رنگ</label><select class="variant" onchange="changeVariant(${i},'color',this.value)">${colors.map(v=>`<option ${v===x.color?'selected':''}>${esc(v)}</option>`).join('')}</select></div></div>
+ <div style="text-align:left"><b>${fmt(x.price*x.qty)} تومان</b><div class="cart-controls" style="justify-content:flex-end;margin-top:10px"><button class="gold smallbtn" onclick="changeQty(${i},1)">+</button><span class="qty">${fmt(x.qty)}</span><button class="ghost smallbtn" onclick="changeQty(${i},-1)">−</button><button class="danger smallbtn" onclick="removeCart(${i})">حذف</button></div></div></div>`}).join('');
+ document.getElementById('cartTotal').textContent=fmt(cart.reduce((s,x)=>s+x.price*x.qty,0))+' تومان';
+}
+function changeQty(i,d){if(!cart[i])return;cart[i].qty+=d;if(cart[i].qty<=0)cart.splice(i,1);save();renderCart();updateCartCount()}
+function removeCart(i){cart.splice(i,1);save();renderCart();updateCartCount();toast('محصول از سبد حذف شد')}
+function changeVariant(i,key,value){let x=cart[i];if(!x)return;let duplicate=cart.findIndex((y,j)=>j!==i&&y.productId===x.productId&&y.size===(key==='size'?value:x.size)&&y.color===(key==='color'?value:x.color));x[key]=value;if(duplicate>=0){cart[duplicate].qty+=x.qty;cart.splice(i,1)}save();renderCart();updateCartCount()}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+function checkoutNotice(){toast('اتصال ثبت سفارش در مرحله بعد انجام می‌شود')}
+function openAuth(){document.getElementById('authOverlay').classList.add('show')}
+function normalizePhone(v){v=v.replace(/[^\d+]/g,'');if(v.startsWith('09'))return '+98'+v.slice(1);if(v.startsWith('9')&&v.length===10)return '+98'+v;if(v.startsWith('0098'))return '+'+v.slice(2);return v}
+async function sendOtp(){
+ const status=document.getElementById('authStatus'),phone=normalizePhone(document.getElementById('phone').value);
+ if(!/^\+[1-9]\d{7,14}$/.test(phone)){status.textContent='شماره موبایل معتبر وارد کنید. برای شماره ایران می‌توانید 09xxxxxxxxx بنویسید.';return}
+ if(!supabaseClient){status.textContent='ارسال پیامک هنوز فعال نیست. ابتدا SUPABASE_URL و SUPABASE_ANON_KEY را در کد تنظیم کنید و Phone Auth و سرویس پیامک را در پنل Supabase فعال کنید. پس از تنظیم، همین دکمه کد واقعی ارسال می‌کند.';return}
+ document.getElementById('sendOtpBtn').disabled=true;status.textContent='در حال ارسال کد...';
+ const {error}=await supabaseClient.auth.signInWithOtp({phone});
+ document.getElementById('sendOtpBtn').disabled=false;
+ if(error){status.textContent='ارسال کد ناموفق بود: '+error.message;return}
+ document.getElementById('phone').dataset.normalized=phone;document.getElementById('otpArea').style.display='block';status.textContent='کد تأیید ارسال شد. پیامک را بررسی کنید.';
+}
+async function verifyOtp(){
+ const status=document.getElementById('authStatus'),token=document.getElementById('otp').value.trim(),phone=document.getElementById('phone').dataset.normalized;
+ if(!phone||!token){status.textContent='شماره و کد تأیید را وارد کنید.';return}
+ const {data,error}=await supabaseClient.auth.verifyOtp({phone,token,type:'sms'});
+ if(error){status.textContent='کد تأیید نشد: '+error.message;return}
+ status.textContent='ورود با موفقیت انجام شد.';toast('ورود موفق');setTimeout(()=>closeModal('authOverlay'),1000);
+}
+function toggleAdmin(){document.getElementById('admin').classList.toggle('show');renderAdmin();if(document.getElementById('admin').classList.contains('show'))document.getElementById('admin').scrollIntoView({behavior:'smooth'})}
+function addProduct(){
+ let name=document.getElementById('newName').value.trim(),price=Number(document.getElementById('newPrice').value),cat=document.getElementById('newCat').value,sizes=document.getElementById('newSizes').value.split(',').map(x=>x.trim()).filter(Boolean),colors=document.getElementById('newColors').value.split(',').map(x=>x.trim()).filter(Boolean);
+ if(!name||!price){toast('نام و قیمت محصول را وارد کنید');return}
+ products.unshift({id:Date.now(),name,price,cat,sizes,colors});save();render();['newName','newPrice','newSizes','newColors'].forEach(id=>document.getElementById(id).value='');toast('محصول در همین مرورگر ثبت شد')
+}
+function renderAdmin(){let el=document.getElementById('adminList');if(!el)return;el.innerHTML='<h3>فهرست محصولات</h3>'+products.map(p=>`<div class="admin-row"><span>${esc(p.name)} <small class="muted">(${esc(p.cat)})</small></span><b>${fmt(p.price)} تومان</b><button class="danger smallbtn" onclick="removeProduct(${p.id})">حذف</button></div>`).join('')}
+function removeProduct(id){products=products.filter(p=>p.id!==id);save();render()}
+render();renderCart();
+</script>
+</body></html>
